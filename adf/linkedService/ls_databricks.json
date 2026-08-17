@@ -1,0 +1,20 @@
+{
+	"name": "ls_databricks",
+	"properties": {
+		"annotations": [],
+		"type": "AzureDatabricks",
+		"typeProperties": {
+			"domain": "https://adb-7405605673999872.12.azuredatabricks.net",
+			"authentication": "MSI",
+			"workspaceResourceId": "/subscriptions/24130423-3005-42ea-81ae-f90bbbc465a2/resourceGroups/rg-rmg-dev/providers/Microsoft.Databricks/workspaces/dbw-rmg-dev",
+			"newClusterNodeType": "Standard_DS3_v2",
+			"newClusterNumOfWorker": "1",
+			"newClusterSparkEnvVars": {
+				"PYSPARK_PYTHON": "/databricks/python3/bin/python3"
+			},
+			"newClusterVersion": "17.3.x-photon-scala2.13",
+			"clusterOption": "Fixed",
+			"newClusterInitScripts": []
+		}
+	}
+}

@@ -1,0 +1,33 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "adf-rmg-dev123"
+		},
+		"ls_adls_accountKey": {
+			"value": ""
+		},
+		"ls_adls_properties_typeProperties_url": {
+			"value": "https://rmgdevstorage123.dfs.core.windows.net/"
+		},
+		"ls_kv_properties_typeProperties_baseUrl": {
+			"value": "https://kv-rmg-dev123.vault.azure.net/"
+		},
+		"ls_postgres_properties_typeProperties_server": {
+			"value": "psql-rmg-dev123.postgres.database.azure.com"
+		},
+		"ls_postgres_properties_typeProperties_database": {
+			"value": "rmg_erp"
+		},
+		"ls_postgres_properties_typeProperties_username": {
+			"value": "rmgadmin"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}

@@ -1,0 +1,15 @@
+{
+	"name": "adf-rmg-dev123",
+	"properties": {
+		"trustModeClaimForMi": {
+			"value": "Disabled",
+			"editable": true
+		}
+	},
+	"location": "southeastasia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "c3c21216-b89b-4353-9a4e-1a3484c753b6",
+		"tenantId": "6d689af4-512e-418c-8e40-42c6839fcbc0"
+	}
+}

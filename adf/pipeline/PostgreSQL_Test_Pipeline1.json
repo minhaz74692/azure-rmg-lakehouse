@@ -17,10 +17,6 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzurePostgreSqlSource",
-						"query": {
-							"value": "SELECT * FROM erp.buyers LIMIT 10",
-							"type": "Expression"
-						},
 						"partitionOption": "None",
 						"queryTimeout": "02:00:00"
 					},

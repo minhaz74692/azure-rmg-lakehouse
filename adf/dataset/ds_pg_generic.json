@@ -1,0 +1,30 @@
+{
+	"name": "ds_pg_generic",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_postgres",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"schemaName": {
+				"type": "string"
+			},
+			"tableName": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "AzurePostgreSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": {
+				"value": "@dataset().schemaName",
+				"type": "Expression"
+			},
+			"table": {
+				"value": "@dataset().tableName",
+				"type": "Expression"
+			}
+		}
+	}
+}

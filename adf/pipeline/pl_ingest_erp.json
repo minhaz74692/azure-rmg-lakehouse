@@ -1,0 +1,47 @@
+{
+	"name": "pl_ingest_erp",
+	"properties": {
+		"activities": [
+			{
+				"name": "LookupConfig",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzurePostgreSqlSource",
+						"query": {
+							"value": "SELECT source_schema, source_table, target_path, load_type,\nCOALESCE(watermark_column,'') AS watermark_column,\nto_char(last_watermark,'YYYY-MM-DD HH24:MI:SS') AS last_watermark\nFROM control.ingestion_config\nWHERE is_active = TRUE",
+							"type": "Expression"
+						},
+						"partitionOption": "None",
+						"queryTimeout": "02:00:00"
+					},
+					"dataset": {
+						"referenceName": "ds_pg_generic",
+						"type": "DatasetReference",
+						"parameters": {
+							"schemaName": "control",
+							"tableName": "ingestion_config"
+						}
+					},
+					"firstRowOnly": false
+				}
+			}
+		],
+		"parameters": {
+			"windowStart": {
+				"type": "string",
+				"defaultValue": "@utcnow()"
+			}
+		},
+		"annotations": []
+	}
+}

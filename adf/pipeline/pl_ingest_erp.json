@@ -34,6 +34,102 @@
 					},
 					"firstRowOnly": false
 				}
+			},
+			{
+				"name": "ForEachTable",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "LookupConfig",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('LookupConfig').output.value",
+						"type": "Expression"
+					},
+					"batchCount": 4,
+					"activities": [
+						{
+							"name": "Copy data1",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzurePostgreSqlSource",
+									"query": {
+										"value": "@if(equals(item().load_type,'full'),\nconcat('SELECT * FROM ', item().source_schema, '.', item().source_table),\nconcat('SELECT * FROM ', item().source_schema, '.', item().source_table,\n' WHERE ', item().watermark_column, ' > ''', item().last_watermark,\n''' AND ', item().watermark_column, ' <= ''',\nformatDateTime(pipeline().parameters.windowStart,'yyyy-MM-dd HH:mm:ss'), ''''))",
+										"type": "Expression"
+									},
+									"partitionOption": "None",
+									"queryTimeout": "02:00:00"
+								},
+								"sink": {
+									"type": "ParquetSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									},
+									"formatSettings": {
+										"type": "ParquetWriteSettings"
+									}
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "ds_pg_generic",
+									"type": "DatasetReference",
+									"parameters": {
+										"schemaName": {
+											"value": "@item().source_schema",
+											"type": "Expression"
+										},
+										"tableName": {
+											"value": "@item().source_table",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "ds_adls_parquet",
+									"type": "DatasetReference",
+									"parameters": {
+										"path": {
+											"value": "@concat('raw/', item().target_path, '/ingest_date=',formatDateTime(pipeline().parameters.windowStart,'yyyy-MM-dd'))",
+											"type": "Expression"
+										},
+										"fileName": {
+											"value": "@concat(item().source_table, '_', pipeline().RunId, '.parquet')",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					]
+				}
 			}
 		],
 		"parameters": {

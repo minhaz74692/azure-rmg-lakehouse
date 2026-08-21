@@ -1,0 +1,175 @@
+{
+	"name": "pl_master",
+	"properties": {
+		"activities": [
+			{
+				"name": "ingest_erp",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pl_ingest_erp",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"windowStart": {
+							"value": "@pipeline().parameters.runDate",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			{
+				"name": "ingest_api",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pl_ingest_api",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"runDate": {
+							"value": "@pipeline().parameters.runDate",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			{
+				"name": "nb_bronze",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "ingest_erp",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "ingest_api",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/minhaz74692@gmail.com/azure-rmg-lakehouse/databricks/nb_bronze",
+					"baseParameters": {
+						"batch_id ": {
+							"value": "@pipeline().RunId",
+							"type": "Expression"
+						},
+						"ingest_date": {
+							"value": "@pipeline().parameters.runDate",
+							"type": "Expression"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_databricks",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "nb_gold",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "nb_silver",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/minhaz74692@gmail.com/azure-rmg-lakehouse/databricks/nb_gold",
+					"baseParameters": {
+						"batch_id ": {
+							"value": "@pipeline().RunId",
+							"type": "Expression"
+						},
+						"ingest_date": {
+							"value": "@pipeline().parameters.runDate",
+							"type": "Expression"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_databricks",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "nb_silver",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "nb_bronze",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/minhaz74692@gmail.com/azure-rmg-lakehouse/databricks/nb_silver",
+					"baseParameters": {
+						"batch_id ": {
+							"value": "@pipeline().RunId",
+							"type": "Expression"
+						},
+						"ingest_date": {
+							"value": "@pipeline().parameters.runDate",
+							"type": "Expression"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_databricks",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"parameters": {
+			"runDate": {
+				"type": "string",
+				"defaultValue": "2026-20-19"
+			}
+		},
+		"annotations": []
+	}
+}

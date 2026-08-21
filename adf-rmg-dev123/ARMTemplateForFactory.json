@@ -447,7 +447,7 @@
 				"parameters": {
 					"runDate": {
 						"type": "string",
-						"defaultValue": "2026-20-19"
+						"defaultValue": "2026-08-19"
 					}
 				},
 				"annotations": []

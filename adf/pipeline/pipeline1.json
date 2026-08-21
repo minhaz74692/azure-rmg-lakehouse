@@ -1,0 +1,38 @@
+{
+	"name": "pipeline1",
+	"properties": {
+		"activities": [
+			{
+				"name": "nb_bronze",
+				"type": "DatabricksNotebook",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/minhaz74692@gmail.com/azure-rmg-lakehouse/databricks/nb_bronze",
+					"baseParameters": {
+						"batch_id ": "@pipeline().RunId",
+						"ingest_date": "@pipeline().parameters.runDate"
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_databricks",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"parameters": {
+			"runDate": {
+				"type": "string",
+				"defaultValue": "2026-08-20"
+			}
+		},
+		"annotations": []
+	}
+}

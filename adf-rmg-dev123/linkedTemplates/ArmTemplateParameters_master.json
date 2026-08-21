@@ -23,6 +23,9 @@
 		"ls_postgres_properties_typeProperties_username": {
 			"value": "rmgadmin"
 		},
+		"rmg_HttpServer_frankfurter_properties_typeProperties_url": {
+			"value": "https://api.frankfurter.dev"
+		},
 		"containerUri": {
 			"value": ""
 		},

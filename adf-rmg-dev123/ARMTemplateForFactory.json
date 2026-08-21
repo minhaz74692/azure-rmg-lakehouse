@@ -61,7 +61,7 @@
 						"typeProperties": {
 							"notebookPath": "/Shared/adf_test",
 							"baseParameters": {
-								"batch_id ": {
+								"batch_id": {
 									"value": "@pipeline().RunId",
 									"type": "Expression"
 								},

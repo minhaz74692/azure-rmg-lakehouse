@@ -15,10 +15,16 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"notebookPath": "/Users/minhaz74692@gmail.com/azure-rmg-lakehouse/databricks/nb_bronze",
+					"notebookPath": "/Shared/nb_bronze",
 					"baseParameters": {
-						"batch_id ": "@pipeline().RunId",
-						"ingest_date": "@pipeline().parameters.runDate"
+						"batch_id ": {
+							"value": "@pipeline().RunId",
+							"type": "Expression"
+						},
+						"ingest_date": {
+							"value": "@pipeline().parameters.runDate",
+							"type": "Expression"
+						}
 					}
 				},
 				"linkedServiceName": {

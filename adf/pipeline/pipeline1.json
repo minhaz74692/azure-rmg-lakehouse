@@ -15,7 +15,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"notebookPath": "/Shared/adf_test",
+					"notebookPath": "/Workspace/Shared/adf_test",
 					"baseParameters": {
 						"batch_id": {
 							"value": "@pipeline().RunId",

@@ -1,0 +1,75 @@
+{
+	"name": "pl_ingest_api",
+	"properties": {
+		"activities": [
+			{
+				"name": "APIIngest",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "GET",
+					"url": "@concat('https://api.frankfurter.dev/v2/rates?base=USD&quotes=BDT,EUR,GBP&date=', formatDateTime(pipeline().parameters.runDate,'yyyy-MM-dd'))"
+				}
+			},
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "APIIngest",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "HttpReadSettings",
+							"requestMethod": "GET"
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "ls_frankfurter",
+						"type": "DatasetReference",
+						"parameters": {
+							"runDate": {
+								"value": "@pipeline().parameters.runDate",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			}
+		],
+		"parameters": {
+			"runDate": {
+				"type": "string"
+			}
+		},
+		"annotations": []
+	}
+}

@@ -1,0 +1,26 @@
+{
+	"name": "ls_frankfurter",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "rmg_HttpServer_frankfurter",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"runDate": {
+				"type": "String"
+			}
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "HttpServerLocation",
+				"relativeUrl": {
+					"value": "v2/rates?base=USD&quotes=BDT,EUR,GBP&date=@{dataset().runDate}",
+					"type": "Expression"
+				}
+			}
+		},
+		"schema": {}
+	}
+}

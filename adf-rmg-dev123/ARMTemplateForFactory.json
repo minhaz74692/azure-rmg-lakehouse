@@ -59,7 +59,7 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"notebookPath": "/Users/minhaz74692@gmail.com/azure-rmg-lakehouse/databricks/nb_bronze",
+							"notebookPath": "/Shared/nb_bronze",
 							"baseParameters": {
 								"batch_id ": {
 									"value": "@pipeline().RunId",

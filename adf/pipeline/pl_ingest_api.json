@@ -3,33 +3,9 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "APIIngest",
-				"type": "WebActivity",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"method": "GET",
-					"url": "@concat('https://api.frankfurter.dev/v2/rates?base=USD&quotes=BDT,EUR,GBP&date=', formatDateTime(pipeline().parameters.runDate,'yyyy-MM-dd'))"
-				}
-			},
-			{
-				"name": "Copy data1",
+				"name": "copy_frankfurter",
 				"type": "Copy",
-				"dependsOn": [
-					{
-						"activity": "APIIngest",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -49,6 +25,15 @@
 							"type": "JsonReadSettings"
 						}
 					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
 					"enableStaging": false
 				},
 				"inputs": [
@@ -58,6 +43,18 @@
 						"parameters": {
 							"runDate": {
 								"value": "@pipeline().parameters.runDate",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_json",
+						"type": "DatasetReference",
+						"parameters": {
+							"file_name": {
+								"value": "@concat('rates/', pipeline().parameters.runDate, '/rates.json')",
 								"type": "Expression"
 							}
 						}

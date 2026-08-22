@@ -1,0 +1,17 @@
+{
+	"name": "AzureDatabricks1",
+	"properties": {
+		"annotations": [],
+		"type": "AzureDatabricks",
+		"typeProperties": {
+			"domain": "https://adb-7405608883925692.12.azuredatabricks.net",
+			"authentication": "MSI",
+			"workspaceResourceId": "/subscriptions/24130423-3005-42ea-81ae-f90bbbc465a2/resourceGroups/rg-rmg-dev/providers/Microsoft.Databricks/workspaces/dbw-rmg-new",
+			"newClusterNodeType": "single",
+			"newClusterNumOfWorker": "1",
+			"newClusterVersion": "2",
+			"clusterOption": "Fixed",
+			"newClusterInitScripts": []
+		}
+	}
+}

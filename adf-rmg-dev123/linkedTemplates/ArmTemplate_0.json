@@ -127,7 +127,7 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"notebookPath": "/Shared/nb_bronze",
+							"notebookPath": "/Shared/test_nb_bronze",
 							"baseParameters": {
 								"batch_id": {
 									"value": "@pipeline().RunId",
